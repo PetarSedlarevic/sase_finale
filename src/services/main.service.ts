@@ -55,6 +55,13 @@ export class MainService {
         })
     }
 
+    static async editUser(userName: string, password:string, userId: number){
+        return await this.useAxios(`/user/${userId}/edit`, 'post', {
+            username: userName,
+            password: password
+        })
+    }
+
     static async createNewMessage(title: string, content: string, email: string){
         return await this.useAxios('message/post', 'post', {
             title: title,

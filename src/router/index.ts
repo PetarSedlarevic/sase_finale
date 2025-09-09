@@ -25,7 +25,7 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
     },
     {
-      path: '/user/:id',
+      path: '/user/me',
       name: 'user',
       component: UserView
     },
@@ -45,7 +45,7 @@ const router = createRouter({
       component: EditUserView
     },
     {
-      path: '/message',
+      path: '/message/:id',
       name: 'message',
       component: MessageView
     },

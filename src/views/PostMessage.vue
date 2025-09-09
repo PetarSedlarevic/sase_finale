@@ -24,15 +24,7 @@ function post(e: Event) {
     if (title.value == '' || content.value == '') return
 
     MainService.createNewMessage(title.value, content.value, email)
-        .then(rsp => {
-            router.push('/')
-        })
-        .then((failure) => {
-            if (isNavigationFailure(failure)) {
-                console.warn('Navigation Failed: ', failure)
-            }
-        })
-        .catch(e => alert('Something went wrong there'))
+        router.push('/')
 }
 
 </script>

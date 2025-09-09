@@ -21,6 +21,8 @@ if (!AuthService.hasAuth()) {
 }
 
 function checkId(message: any, user: number){
+    console.log(user)
+    console.log(message)
     return message == user 
 }
 
@@ -48,12 +50,12 @@ MessageService.getMessageById(id)
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        Added on: {{ formatTime(message.createdAt) }}
-                    </li>
-                    <li class="list-group-item">
                         {{ message.content }}
                     </li>
-                    <li class="list-group-item" v-if="checkId(message.addedBy, AuthService.getUserId())">
+                    <li class="list-group-item">
+                        Added on: {{ formatTime(message.createdAt) }}
+                    </li>
+                    <li class="list-group-item" v-if="checkId(message.userId, AuthService.getUserId())">
                         <button class="btn btn-primary" @click="editMessage">
                             Edit Message
                         </button>
@@ -63,7 +65,7 @@ MessageService.getMessageById(id)
                             You can't edit this message
                         </button>
                     </li>
-                    <li class="list-group-item" v-if="checkId(message.addedBy, AuthService.getUserId())">
+                    <li class="list-group-item" v-if="checkId(message.userId, AuthService.getUserId())">
                         <button class="btn btn-primary" @click="deleteMessage">
                             Delete Message
                         </button>

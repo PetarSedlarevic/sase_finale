@@ -3,7 +3,6 @@ export interface MessageModel{
     userId: number,
     content: string,
     title: string,
-    addedBy: number,
     createdAt: string,
     updatedAt: string | null
 }

@@ -1,14 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Navigation from '../components/Navigation.vue';
 import type { MessageModel } from '@/models/message.model';
 import { MessageService } from '@/services/message.service';
 import { useLogout } from '@/hooks/logout.hook';
 import router from '@/router';
+import { MainService } from '@/services/main.service';
+import { AuthService } from '@/services/auth.service';
 
 const logout = useLogout()
 const message = ref<MessageModel[]>()
 const allMessages = ref<MessageModel[]>()
+const userAndIDMap = new Map<number, string>()
+
+if (!AuthService.hasAuth()) {
+    router.push('/user/login')
+}
 
 MessageService.getMessage()
     .then(rsp => {
@@ -17,14 +24,27 @@ MessageService.getMessage()
     })
     .catch(e => logout(e))
 
-function doSearch(e: any) {
+onMounted(async () => {
+    
+    try {
+        const [useRsp] = await Promise.all([
+            MainService.getUsers()
+        ])
+        console.log(useRsp.data)
+        for (const u of useRsp.data ?? []) {
+            userAndIDMap.set(u.userId, u.userName)
+        }
+    } catch (e) {
+        console.log('Trying to mount')
+    }
+})
 
+function doSearch(e: any) {
+    console.log(userAndIDMap)
     if (allMessages.value == undefined) {
         console.log('Sup fuckers, im evil pomni')
         return
     }
-    
-
 
     const input = e.target.value ? e.target.value.toLowerCase() : ''
 
@@ -59,7 +79,7 @@ function goToMessage(id: number) {
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    <!-- <p>Added by {{ userAndIDMap.get(s.addedBy!) ?? "unknown" }} </p> -->
+                    <p>Added by {{ userAndIDMap.get(m.userId) ?? "unknown" }} </p>
                 </li>
                 <li class="list-group-item">
                     <RouterLink :to="`/message/${m.messageId}`" class="btn btn-sm btn-primary">

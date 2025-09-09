@@ -32,6 +32,7 @@ function edit(e: Event) {
     if (title.value == '' || content.value == '') return
 
     MainService.editMessage(title.value, content.value, id)
+    router.push('/')
 }
 
 </script>

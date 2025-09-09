@@ -10,7 +10,7 @@ const router = useRouter()
 const logout = useLogout()
 const showConfirm = ref(false)
 
-if (AuthService.hasAuth()) {
+if (!AuthService.hasAuth()) {
     router.push('/user/login')
 }
 

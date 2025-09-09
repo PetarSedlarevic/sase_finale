@@ -8,19 +8,21 @@ import { useRouter } from 'vue-router';
 
 const password = ref<string>('')
 const name = ref<string>('')
-const email = ref<string>('')
 const router = useRouter()
 const logout = useLogout()
 
-email.value = AuthService.getAuth().email
+if (!AuthService.hasAuth()) {
+    router.push('/user/login')
+}
+
+const id = AuthService.getUserId()
 
 function doEdit(e: Event) {
     e.preventDefault()
 
     if (name.value == '' || password.value == '') return
 
-    MainService.deleteUser(email.value)
-    setTimeout(() => { MainService.register(email.value, password.value, name.value) }, 200)
+    MainService.editUser(name.value, password.value, id)
 
     logout(null)
     router.push('/user/login')
